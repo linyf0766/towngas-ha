@@ -1,0 +1,6 @@
+{
+  "name": "港华燃气",
+  "domains": ["sensor"],
+  "homeassistant": "2024.4.0",
+  "persistent_directory": "userfiles"
+}
