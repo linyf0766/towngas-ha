@@ -1,0 +1,11 @@
+{
+  "domain": "towngas",
+  "name": "港华燃气",
+  "version": "1.0.0",
+  "documentation": "https://github.com/your-repo/towngas",
+  "issue_tracker": "https://github.com/your-repo/towngas/issues",
+  "codeowners": ["@yourusername"],
+  "requirements": ["aiohttp>=3.8.0"],
+  "iot_class": "cloud_polling",
+  "config_flow": true
+}
