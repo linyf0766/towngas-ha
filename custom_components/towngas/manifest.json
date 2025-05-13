@@ -7,7 +7,7 @@
   "codeowners": ["@linyf0766"],
   "requirements": ["aiohttp>=3.8.0"],
   "iot_class": "cloud_polling",
-  "config_flow": true
+  "config_flow": true,
   "hacs": "1.6.0",
   "render_readme": true
 }
