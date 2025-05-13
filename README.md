@@ -1,5 +1,4 @@
 # 港华燃气Home Assistant集成
-![版本](https://img.shields.io/github/v/release/linyf0766/towngas-ha)
 
 通过Home Assistant获取港华燃气余额数据
 
