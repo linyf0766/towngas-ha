@@ -1,5 +1,5 @@
 # 港华燃气Home Assistant集成
-通过Home Assistant获取港华燃气余额数据
+通过Home Assistant获取港华燃气余额数据，代码由AI生成
 
 # 安装
 1. 通过HACS添加自定义仓库
