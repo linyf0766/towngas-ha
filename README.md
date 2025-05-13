@@ -15,4 +15,4 @@
 QYXXX为区域码，16XXXXX为用户号
 
 # 非清远地区可尝试修改api地址
-因为没账号测试，非清远地区可尝试修改sensor.py文件里面的api地址，把“https://qingyuan.towngasvcc.com/openapi/uv1/biz/checkRouters”修改成对应地区的api地址
+因为没账号测试，非清远地区可尝试修改sensor.py文件里面的api地址，把 “https://qingyuan.towngasvcc.com/openapi/uv1/biz/checkRouters” 中的“qingyuan”修改成对应的地区
