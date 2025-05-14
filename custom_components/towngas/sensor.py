@@ -64,7 +64,7 @@ class TowngasCoordinator(DataUpdateCoordinator):
         """Initialize global Towngas data updater."""
         self._subs_code = subs_code
         self._org_code = org_code
-        self._api_url = "https://www.towngasvcc.com/openapi/uv1/biz/checkRouters"
+        self._api_url = "https://qingyuan.towngasvcc.com/openapi/uv1/biz/checkRouters"
         self.last_updated = None
 
         update_interval = timedelta(minutes=update_interval)
