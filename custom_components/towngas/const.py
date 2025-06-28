@@ -2,6 +2,7 @@
 
 DOMAIN = "towngas"
 
+CONF_HOST = "host"
 CONF_SUBS_CODE = "subsCode"
 CONF_ORG_CODE = "orgCode"
 CONF_UPDATE_INTERVAL = "updatetime"
