@@ -2,8 +2,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 import async_timeout
 import aiohttp
 import json
@@ -23,6 +22,7 @@ from homeassistant.helpers.update_coordinator import (
 from homeassistant.util import dt as dt_util
 
 from .const import (
+    CONF_HOST,
     CONF_ORG_CODE,
     CONF_SUBS_CODE,
     CONF_UPDATE_INTERVAL,
@@ -45,26 +45,24 @@ async def async_setup_entry(
         hass,
         config[CONF_SUBS_CODE],
         config[CONF_ORG_CODE],
+        config[CONF_HOST],
         options.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL),
     )
 
-    # Perform initial data refresh
-    try:
-        await coordinator.async_refresh()
-    except Exception as err:
-        _LOGGER.error("Failed to refresh Towngas data: %s", err)
-        raise
-
+    # 初始数据刷新
+    await coordinator.async_refresh()
+    
     async_add_entities([TowngasSensor(coordinator, config, entry.entry_id)])
 
 class TowngasCoordinator(DataUpdateCoordinator):
     """Class to manage fetching Towngas data."""
 
-    def __init__(self, hass, subs_code, org_code, update_interval):
+    def __init__(self, hass, subs_code, org_code, host, update_interval):
         """Initialize global Towngas data updater."""
         self._subs_code = subs_code
         self._org_code = org_code
-        self._api_url = "https://qingyuan.towngasvcc.com/openapi/uv1/biz/checkRouters"
+        self._host = host.rstrip('/')  # 确保URL格式正确
+        self._api_url = f"{self._host}/openapi/uv1/biz/checkRouters"
         self.last_updated = None
 
         update_interval = timedelta(minutes=update_interval)
@@ -99,7 +97,6 @@ class TowngasCoordinator(DataUpdateCoordinator):
                         self._api_url,
                         params=params,
                         headers=headers,
-                      # ssl=False  # 临时用于调试，生产环境应移除
                     ) as response:
                         text = await response.text()
                         _LOGGER.debug("Raw API response: %s", text)
@@ -160,13 +157,17 @@ class TowngasSensor(SensorEntity):
         self._coordinator = coordinator
         self._subs_code = config[CONF_SUBS_CODE]
         self._org_code = config[CONF_ORG_CODE]
+        self._host = config[CONF_HOST]
         self._entry_id = entry_id
+        
+        # 使用机构代码和用户号创建唯一名称
         self._attr_name = f"Towngas Balance {self._subs_code}"
         self._attr_unique_id = f"towngas_balance_{self._subs_code}_{self._org_code}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, self._attr_unique_id)},
             "name": self._attr_name,
             "manufacturer": "Towngas",
+            "configuration_url": self._host,
         }
 
     @property
@@ -190,6 +191,7 @@ class TowngasSensor(SensorEntity):
         attrs = {
             "subs_code": self._subs_code,
             "org_code": self._org_code,
+            "host": self._host,
         }
         
         if hasattr(self._coordinator, 'last_updated'):
