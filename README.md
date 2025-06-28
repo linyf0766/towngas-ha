@@ -11,6 +11,6 @@
 
 # 获取用户号、区域码
 打开港华燃气网址：https://www.towngasvcc.com/
-选择自己的港华分公司，登录自己的燃气账号，打开业务办理>账单缴费，网址加载完后为：https://qingyuan.towngasvcc.com/business/pay/owe/QYXXX/16XXXXX
+选择自己的港华分公司，登录自己的燃气账号，打开业务办理>账单缴费，网址加载完后为：https://xxxxxx.towngasvcc.com/business/pay/owe/QYXXX/16XXXXX
 16XXXXX为用户号
 
