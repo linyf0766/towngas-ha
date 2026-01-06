@@ -8,6 +8,7 @@
    
 # 使用
 选择燃气分公司，之后输入subsCode（用户号），配置中updatetime（更新间隔默认10分钟，单位分钟)
+
 <img width="879" height="589" alt="ScreenShot_2026-01-06_082825_840" src="https://github.com/user-attachments/assets/311e9f8d-1746-44fc-b635-fc5ff3bad2a1" />
 
 <img width="890" height="651" alt="ScreenShot_2026-01-06_082848_870" src="https://github.com/user-attachments/assets/028576fd-0ba6-4aae-a82a-8d8f11d9db8a" />
