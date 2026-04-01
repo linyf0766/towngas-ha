@@ -11,11 +11,11 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Towngas from a config entry."""
-    # Ìæ»»ÎªĞÂµÄ async_forward_entry_setups ·½·¨
+    # æ›¿æ¢ä¸ºæ–°çš„ async_forward_entry_setups æ–¹æ³•
     await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
     return True
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    # ±£³ÖÔ­Ñù£¬async_forward_entry_unload ÈÔÈ»ÊÇÕıÈ·µÄ·½·¨
+    # ä¿æŒåŸæ ·ï¼Œasync_forward_entry_unload ä»ç„¶æ˜¯æ­£ç¡®çš„æ–¹æ³•.
     return await hass.config_entries.async_forward_entry_unload(entry, "sensor")
