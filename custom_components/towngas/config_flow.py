@@ -17,7 +17,9 @@ from .const import (
     CONF_ORG_CODE,
     CONF_SUBS_CODE,
     CONF_UPDATE_INTERVAL,
+    CONF_FLARESOLVERR_URL,
     DEFAULT_UPDATE_INTERVAL,
+    DEFAULT_FLARESOLVERR_URL,
     DOMAIN,
 )
 
@@ -53,27 +55,22 @@ class TowngasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         errors: dict[str, str] = {}
 
-        # 从本地文件加载机构列表
         if not self.org_list:
             self.org_list = await self.hass.async_add_executor_job(load_org_list)
             if not self.org_list:
                 return self.async_abort(reason="no_orgs")
 
         if user_input is not None:
-            # 保存选择的机构信息
             self.selected_org = next(
                 (org for org in self.org_list if org["orgCode"] == user_input["org_code"]),
                 None
             )
-            
             if self.selected_org:
-                # 转到下一步输入用户号
                 return await self.async_step_account()
             errors["base"] = "invalid_org"
 
-        # 构建机构选择下拉菜单
         org_options = {
-            org["orgCode"]: f"{org['shortName']}"
+            org["orgCode"]: f"{org.get('shortName', org.get('orgName', '未知'))} ({org.get('desc', '')})"
             for org in self.org_list
         }
 
@@ -92,7 +89,6 @@ class TowngasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            # 创建唯一ID并保存配置
             unique_id = f"{user_input[CONF_SUBS_CODE]}_{self.selected_org['orgCode']}"
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
@@ -101,7 +97,8 @@ class TowngasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_SUBS_CODE: user_input[CONF_SUBS_CODE],
                 CONF_ORG_CODE: self.selected_org["orgCode"],
                 CONF_HOST: self.selected_org["host"],
-                CONF_UPDATE_INTERVAL: user_input[CONF_UPDATE_INTERVAL]
+                CONF_UPDATE_INTERVAL: user_input[CONF_UPDATE_INTERVAL],
+                CONF_FLARESOLVERR_URL: user_input.get(CONF_FLARESOLVERR_URL, DEFAULT_FLARESOLVERR_URL),
             }
 
             return self.async_create_entry(
@@ -117,6 +114,10 @@ class TowngasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_UPDATE_INTERVAL,
                     default=DEFAULT_UPDATE_INTERVAL
                 ): int,
+                vol.Optional(
+                    CONF_FLARESOLVERR_URL,
+                    default=DEFAULT_FLARESOLVERR_URL
+                ): str,
             }),
             errors=errors
         )
@@ -149,8 +150,16 @@ class TowngasOptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_UPDATE_INTERVAL,
                     default=self._config_entry.options.get(
-                        CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
+                        CONF_UPDATE_INTERVAL,
+                        self._config_entry.data.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL)
                     ),
                 ): int,
+                vol.Optional(
+                    CONF_FLARESOLVERR_URL,
+                    default=self._config_entry.options.get(
+                        CONF_FLARESOLVERR_URL,
+                        self._config_entry.data.get(CONF_FLARESOLVERR_URL, DEFAULT_FLARESOLVERR_URL)
+                    ),
+                ): str,
             }),
         )
