@@ -19,3 +19,6 @@
 选择自己的港华分公司，登录自己的燃气账号，打开业务办理>账单缴费，网址加载完后为：https://xxxxxx.towngasvcc.com/business/pay/owe/QYXXX/16XXXXX
 16XXXXX为用户号
 
+# 关于部分地区防爬
+部分地区的服务器存在防爬机制，需要调用外部工具FlareSolverr才能正常获取到数据，已知地区：山东，其他地区自行测试
+FlareSolverr需自行部署
